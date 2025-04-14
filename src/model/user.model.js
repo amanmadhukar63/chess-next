@@ -1,10 +1,10 @@
-import { Schema } from 'mongoose';
+import { Schema, models, model } from 'mongoose';
 
 const userSchema = new Schema({
   name: {
     type: String,
     required: false,
-    default: ''
+    default: 'Guest'
   },
   email: {
     type: String,
@@ -20,24 +20,16 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    default: 'user'
+    default: 'USER'
   },
   isVerified: {
     type: Boolean,
     default: false
   },
-  verificationToken: {
+  otp: {
     type: String
-  },
-  verificationTokenExpiry: {
-    type: Date
-  },
-  forgotPasswordToken: {
-    type: String
-  },
-  forgotPasswordTokenExpiry: {
-    type: Date
-  },
+  }
 });
 
-export default User = mongoose.models.users || mongoose.model('users', userSchema);
+const User = models.users || model('users', userSchema);
+export default User;

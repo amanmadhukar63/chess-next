@@ -3,6 +3,11 @@ import { connect, connection } from 'mongoose';
 export default async function connectDB(){
   try {
   
+    if (connection.readyState >= 1) {
+      console.log('🟢 Already connected to the database');
+      return;
+    }
+
     await connect(process.env.DB_URL);
 
     connection.on('error', (error) => {
@@ -10,11 +15,9 @@ export default async function connectDB(){
       process.exit(1);
     });
 
-    connection.on('connected', () => {
-      console.log('Connected to database');
-    });
+    console.log('🟢 Connected to database');
 
   } catch (error) {
-    console.log('Error while connecting to database: error - ', error);
+    console.log('❌ Error while connecting to database: error - ', error);
   }
 }
