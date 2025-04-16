@@ -8,7 +8,9 @@ export default async function connectDB(){
       return;
     }
 
-    await connect(process.env.DB_URL);
+    await connect(process.env.DB_URL,{
+      dbName: process.env.DB_NAME,
+    });
 
     connection.on('error', (error) => {
       console.log('Error while connecting to database, db is down: error - ', error);
