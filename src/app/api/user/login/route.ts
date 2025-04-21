@@ -3,6 +3,7 @@ import User from "@/model/user.model";
 import connectDB from "@/dbConfig/dbConfig";
 import responseHandler, { ResponseStatus } from "@/helper/response";
 import { NullableUserType } from "@/helper/types";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest){
 try {
@@ -31,8 +32,11 @@ try {
   // remove the password from the user object
   delete userExist.password;
   delete userExist.otp;
+
+  // Generate JWT token
+  const token = jwt.sign({ id: userExist._id }, process.env.TOKEN_SECRET!, { expiresIn: "1d" });
   
-  return responseHandler(200, "User logged in successfully", ResponseStatus.SUCCESS, userExist);
+  return responseHandler(200, "User logged in successfully", ResponseStatus.SUCCESS, userExist, { name: "token", value: token });
 
 } catch (error) {
 

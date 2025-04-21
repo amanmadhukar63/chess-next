@@ -41,11 +41,11 @@ export default function Login() {
           break;
 
         default:
-          toast.error('Something went wronger');
+          toast.error('Something went wrong');
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Something went wrongest');
+      toast.error('Oops! Something went wrong');
     }
   };
 

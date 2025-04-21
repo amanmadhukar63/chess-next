@@ -6,11 +6,15 @@ export enum ResponseStatus {
   WARN = "warn"
 }
 
-export default function responseHandler( statusCode: number, message: string, status: ResponseStatus, data?: any, ) {
-  return NextResponse.json({
+export default function responseHandler( statusCode: number, message: string, status: ResponseStatus, data?: any, cookie?: { name: string, value: string }) {
+  const response = NextResponse.json({
     message,
     data,
     statusCode,
     status
   }, { status: statusCode });
+
+  if(cookie) response.cookies.set(cookie?.name, cookie?.value, { httpOnly: true });
+
+  return response;
 }
