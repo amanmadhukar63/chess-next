@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import User from "@/model/user.model";
 import connectDB from "@/dbConfig/dbConfig";
 import responseHandler, { ResponseStatus } from "@/helper/response";

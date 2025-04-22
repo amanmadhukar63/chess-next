@@ -1,8 +1,27 @@
+'use client'
 import Link from "next/link";
 import ThemeSwitch from "./ThemeSwitch";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+
+  const router = useRouter();
+
+  async function handleLogout(){
+    try {
+      await fetch('/api/user/logout');
+      router.push('/login');
+      toast.success("User Logged Out");
+
+    } catch (error) {
+
+      console.error("Error: ",error);
+      toast.error("Something went wrong");
+
+    }
+  }
+
   return (
     <>
       <div className="navbar shadow-sm fixed top-0">
@@ -46,7 +65,7 @@ export default function Navbar() {
         <div className="navbar-end">
           <ThemeSwitch />
           {true ? 
-          <Link href={'/signup'} className="btn">Sign Up</Link>
+          <button className="btn btn-soft btn-error" onClick={handleLogout}>Logout</button>
           : (
             <div className="avatar avatar-placeholder">
               <div className="bg-neutral text-neutral-content w-12 rounded-full">
