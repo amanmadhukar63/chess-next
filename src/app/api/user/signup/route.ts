@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import User from "@/model/user.model";
 import connectDB from "@/dbConfig/dbConfig";
 import responseHandler, { ResponseStatus } from "@/helper/response";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest){
   try {
@@ -31,7 +32,9 @@ export async function POST(request: NextRequest){
     delete user.password;
     delete user.otp;
     
-    return responseHandler(201, "User created successfully", ResponseStatus.SUCCESS, user);
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET!, { expiresIn: "1d" });
+    return responseHandler(201, "User created successfully", ResponseStatus.SUCCESS, user, { name: "token", value: token });
 
   } catch (error) {
       console.log('Error creating user:', error);
