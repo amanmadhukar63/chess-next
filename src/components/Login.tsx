@@ -1,4 +1,5 @@
 'use client'
+import { setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,6 +35,7 @@ export default function Login() {
       switch (result.status) {
         case ResponseStatus.SUCCESS:
           toast.success(result.message);
+          setLocalStorage('user', JSON.stringify(result?.data));
           router.push('/');
           break;
 
