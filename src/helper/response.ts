@@ -6,7 +6,7 @@ export enum ResponseStatus {
   WARN = "warn"
 }
 
-export default function responseHandler( statusCode: number, message: string, status: ResponseStatus, data?: any, cookie?: { name: string, value: string }) {
+export default function responseHandler<T>( statusCode: number, message: string, status: ResponseStatus, data?: T, cookie?: { name: string, value: string }) {
   const response = NextResponse.json({
     message,
     data,

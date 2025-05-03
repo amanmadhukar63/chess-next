@@ -26,7 +26,7 @@ export async function sendMail({ email, subject, mailType } : MailProps) {
       html: "<b>Hello world?</b>",
     });
   
-    console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId,mailType);
   
     return info;
 

@@ -76,7 +76,7 @@ export default function Login() {
             >
               {loading ? <span className="loading loading-spinner loading-lg"></span> : "Login"}
             </button>
-          <p className="fieldset-label">Don't have an account, <Link className="link" href={'/signup'}>Sign Up</Link></p>
+          <p className="fieldset-label">Do not have an account, <Link className="link" href={'/signup'}>Sign Up</Link></p>
         </fieldset>
       </div>
     </div>

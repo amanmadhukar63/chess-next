@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 export default function TwoPlayer() {
 
   const [game, setGame] = useState(new Chess());
-  const [gameOver, setGameOver] = useState<boolean>(false);
   const [suggestion, setSuggestion] = useState<Record<string, { background: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
 
@@ -29,6 +28,7 @@ export default function TwoPlayer() {
 
     } catch (error) {
       toast.error("Invalid Move");
+      console.error(error);
     }
   };
 
@@ -50,6 +50,7 @@ export default function TwoPlayer() {
 
     } catch (error) {
       toast.error("Invalid Move");
+      console.error(error);
       return false;
     }
   };
