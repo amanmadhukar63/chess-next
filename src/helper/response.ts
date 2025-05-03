@@ -14,7 +14,11 @@ export default function responseHandler<T>( statusCode: number, message: string,
     status
   }, { status: statusCode });
 
-  if(cookie) response.cookies.set(cookie?.name, cookie?.value, { httpOnly: true });
+  if(cookie) response.cookies.set(cookie?.name, cookie?.value, { 
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax'
+  });
 
   return response;
 }
