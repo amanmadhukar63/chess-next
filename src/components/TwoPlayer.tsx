@@ -109,7 +109,6 @@ export default function TwoPlayer() {
           onPieceClick={onPieceClick}
           onSquareClick={onSquareClick}
           customSquareStyles={suggestion}
-          // boardWidth={600}
         />
       </div>
       <dialog id="game_over_modal" className="modal">
