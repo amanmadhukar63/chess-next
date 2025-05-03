@@ -28,6 +28,7 @@ export default function SignUp(){
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({username,email,password}),
+        credentials: 'include',
       });
       setLoading(false);
   
