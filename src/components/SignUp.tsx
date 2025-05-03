@@ -1,7 +1,9 @@
 'use client'
+import { setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface SignUpFormType {
@@ -13,10 +15,13 @@ interface SignUpFormType {
 export default function SignUp(){
 
   const userData = useRef<SignUpFormType>({username:"",email:"",password:""});
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignUp = async ({username,email,password}:SignUpFormType) => {
-
+    if(loading) return;
     try {
+      setLoading(true);
       const res = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {
@@ -24,11 +29,14 @@ export default function SignUp(){
         },
         body: JSON.stringify({username,email,password}),
       });
+      setLoading(false);
   
       const result = await res.json();
       switch (result.status) {
         case ResponseStatus.SUCCESS:
           toast.success(result.message);
+          setLocalStorage('user', JSON.stringify(result?.data));
+          router.push('/');
           break;
   
         case ResponseStatus.ERROR:
@@ -70,7 +78,9 @@ export default function SignUp(){
             onClick={()=>{
               handleSignUp(userData.current);
             }}
-            >Sign Up</button>
+            >
+              {loading ? <span className="loading loading-spinner loading-lg"></span> : "Sign Up"}
+            </button>
           <p className="fieldset-label">Already have an account, <Link className="link" href={'/login'}>Login</Link></p>
         </fieldset>
       </div>

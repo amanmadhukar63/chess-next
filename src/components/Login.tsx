@@ -1,8 +1,9 @@
 'use client'
+import { setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface LoginFormType {
@@ -14,9 +15,13 @@ export default function Login() {
 
   const router = useRouter();
   const userData = useRef<LoginFormType>({email:"",password:""});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async ({email, password}: LoginFormType) => {
+    if(loading) return;
+
     try {
+      setLoading(true);
       const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
@@ -24,11 +29,13 @@ export default function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
+      setLoading(false);
 
       const result = await res.json();
       switch (result.status) {
         case ResponseStatus.SUCCESS:
           toast.success(result.message);
+          setLocalStorage('user', JSON.stringify(result?.data));
           router.push('/');
           break;
 
@@ -41,11 +48,11 @@ export default function Login() {
           break;
 
         default:
-          toast.error('Something went wronger');
+          toast.error('Something went wrong');
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Something went wrongest');
+      toast.error('Oops! Something went wrong');
     }
   };
 
@@ -66,7 +73,9 @@ export default function Login() {
             onClick={() => {
               handleLogin(userData.current);
             }}
-            >Login</button>
+            >
+              {loading ? <span className="loading loading-spinner loading-lg"></span> : "Login"}
+            </button>
           <p className="fieldset-label">Don't have an account, <Link className="link" href={'/signup'}>Sign Up</Link></p>
         </fieldset>
       </div>

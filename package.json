@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chess.js": "^1.2.0",
     "daisyui": "^5.0.9",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.1",
     "next": "15.2.4",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
+    "react-chessboard": "^4.7.3",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2"
   },
@@ -22,6 +25,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
