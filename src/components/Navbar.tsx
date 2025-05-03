@@ -48,7 +48,7 @@ export default function Navbar() {
               <li>
                 <a>Parent</a>
                 <ul className="p-2">
-                  <li><a>Submenu 1</a></li>
+                  <li><Link href={'/2player'}>2 Player</Link></li>
                   <li><a>Submenu 2</a></li>
                 </ul>
               </li>
@@ -64,7 +64,7 @@ export default function Navbar() {
               <details className="dropdown">
                 <summary>Mode</summary>
                 <ul className="menu dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm">
-                  <li><a>2 Player</a></li>
+                  <li><Link href={'/2player'}>2 Player</Link></li>
                   <li><a>vs Friend</a></li>
                   <li><a>Dice Chess</a></li>
                 </ul>
