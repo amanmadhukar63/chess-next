@@ -43,7 +43,7 @@ export default function TwoPlayer() {
         promotion: "q", 
       });
 
-      if(gameCopy.isGameOver()) document?.getElementById('game_over_modal')?.showModal();
+      if(gameCopy.isGameOver()) (document.getElementById('game_over_modal') as HTMLDialogElement)?.showModal();
   
       setGame(gameCopy);
       return true;
