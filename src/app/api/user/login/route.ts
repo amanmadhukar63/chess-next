@@ -30,7 +30,6 @@ try {
   }
 
   // remove the password from the user object
-  delete userExist.password;
   delete userExist.otp;
 
   // Generate JWT token
