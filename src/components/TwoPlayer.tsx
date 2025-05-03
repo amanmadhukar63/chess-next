@@ -10,7 +10,6 @@ export default function TwoPlayer() {
   const [suggestion, setSuggestion] = useState<Record<string, { background: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
 
-
   function makeAMove(sourceSquare: Square, targetSquare: Square){
     setSuggestion({});
     try {
