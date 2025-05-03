@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const isPublicPath = publicUrl.includes(request.nextUrl.pathname);
 
   const isAuthenticated = request.cookies.get('token') !== undefined;
-
+console.log('middleware log',{isPublicPath,isAuthenticated,pathname:request.nextUrl.pathname,token:request.cookies.get('token')})
   if(!isAuthenticated && !isPublicPath) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
