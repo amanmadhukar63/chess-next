@@ -70,6 +70,9 @@ export default function TwoPlayer() {
         key = key.slice(2,4);
         color= '#ff000082'
       }
+      else if(key==='O-O-O' || key==='O-O'){
+        key= game.turn()==='w'? key=== 'O-O' ? 'g1' : 'c1' : key=== 'O-O' ? 'g8' : 'c8'
+      }
       else if(key?.length >= 3) key = key.slice(1,3);
       newSquares[key] = {
         background: color,
@@ -86,14 +89,13 @@ export default function TwoPlayer() {
 
   function onSquareClick(square: Square, piece?: string){
     console.log('Square clicked',{square,piece});
-    if(piece && !from.current.selected && piece[0] === game.turn()) {
+    if(piece && piece[0] === game.turn()) {
       from.current={
         source: square,
         selected: true
       };
     }
     else if (from.current.selected) {
-      if(piece && piece[0] === game.turn()) return;
       makeAMove(from.current.source,square);
       from.current.selected=false;
     }
