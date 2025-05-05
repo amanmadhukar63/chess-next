@@ -37,7 +37,7 @@ export default function Login() {
         case ResponseStatus.SUCCESS:
           toast.success(result.message);
           setLocalStorage('user', JSON.stringify(result?.data));
-          router.push('/');
+          window.location.href = '/';
           break;
 
         case ResponseStatus.ERROR:
