@@ -2,7 +2,6 @@
 import { setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -13,7 +12,6 @@ interface LoginFormType {
 
 export default function Login() {
 
-  const router = useRouter();
   const userData = useRef<LoginFormType>({email:"",password:""});
   const [loading, setLoading] = useState<boolean>(false);
 
