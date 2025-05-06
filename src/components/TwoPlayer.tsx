@@ -4,10 +4,13 @@ import { Chess, Square } from "chess.js";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
+type PlayedMovesType = Array<{move:string,from:Square,to:Square}>;
+
 export default function TwoPlayer() {
 
   const [game, setGame] = useState(new Chess());
-  const [suggestion, setSuggestion] = useState<Record<string, { background: string }>>({});
+  const [playedMoves, setPlayedMoves] = useState<PlayedMovesType>([]);
+  const [suggestion, setSuggestion] = useState<Record<string, { background: string, move: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
 
   function makeAMove(sourceSquare: Square, targetSquare: Square){
@@ -61,7 +64,7 @@ export default function TwoPlayer() {
     console.log({piece, square,moves});
 
     if(moves.length === 0) return;
-    const newSquares: Record<string, { background: string }> = {};
+    const newSquares: Record<string, { background: string, move: string }> = {};
 
     // highlight the possible square
     moves.forEach((move) => {
@@ -73,15 +76,18 @@ export default function TwoPlayer() {
       else if(key==='O-O-O' || key==='O-O'){
         key= game.turn()==='w'? key=== 'O-O' ? 'g1' : 'c1' : key=== 'O-O' ? 'g8' : 'c8'
       }
+      else if(key.includes('=')) key = key.split('=')[0].slice(-2);
       else if(key?.length >= 3) key = key.slice(1,3);
       newSquares[key] = {
         background: color,
+        move
       };
     });
 
     // also highlight the clicked square (origin)
     newSquares[square] = {
       background: '#ff990a',
+      move: ''
     };
 
     setSuggestion(newSquares);
@@ -96,6 +102,15 @@ export default function TwoPlayer() {
       };
     }
     else if (from.current.selected) {
+      if(suggestion && suggestion?.[square]?.move) setPlayedMoves( prev => {
+        return [
+          ...prev,
+          {
+            move: suggestion[square].move,
+            from: from.current.source,
+            to: square
+          }
+        ]});
       makeAMove(from.current.source,square);
       from.current.selected=false;
     }
@@ -103,7 +118,16 @@ export default function TwoPlayer() {
 
   return (
     <div className="flex flex-col h-screen items-center justify-center">
-      <div className="w-full sm:w-2/3 md:w-1/2 lg:w-2/5 xl:3/10 2xl:1/5 h-full flex items-center">
+      <div className="w-full sm:w-2/3 md:w-1/2 lg:w-2/5 xl:3/10 2xl:1/5 flex flex-col items-center">
+        <div className="w-full overflow-x-scroll p-2 h-auto">
+          <div className="w-max">
+          {playedMoves.map( (moveObj, ind) => (
+            <span key={ind} className="p-4">
+              {ind%2 === 0 ? `${(ind/2)+1}. ` : '' }
+              {moveObj.move}
+            </span>
+          ))}</div>
+        </div>
         <Chessboard
           id="BasicBoard"
           position={game.fen()}

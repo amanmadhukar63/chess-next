@@ -76,7 +76,7 @@ export default function Navbar() {
         <div className="navbar-end">
           <ThemeSwitch />
           
-          {user && (
+          { pathname!=='/login' && pathname!=='/signup' && user && (
             <div className="dropdown dropdown-end mx-2">
               <div tabIndex={0} role="button" className="avatar avatar-placeholder">
                 <div className="bg-neutral text-neutral-content w-10 rounded-full">
