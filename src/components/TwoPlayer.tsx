@@ -3,8 +3,8 @@ import { Chessboard } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
-
-type PlayedMovesType = Array<{move:string,from:Square,to:Square}>;
+import { PlayedMovesType } from "@/helper/types";
+import Moves from "./Moves";
 
 export default function TwoPlayer() {
 
@@ -12,16 +12,27 @@ export default function TwoPlayer() {
   const [playedMoves, setPlayedMoves] = useState<PlayedMovesType>([]);
   const [suggestion, setSuggestion] = useState<Record<string, { background: string, move: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
+  const [promotionPending, setPromotionPending] = useState<any>(null);
 
-  function makeAMove(sourceSquare: Square, targetSquare: Square){
+  function makeAMove(sourceSquare: Square, targetSquare: Square, promotion="q"){
     setSuggestion({});
+    const piece = game.get(sourceSquare);
+    const isPromotion =
+      piece?.type === "p" &&
+      ((piece.color === "w" && targetSquare[1] === "8") ||
+       (piece.color === "b" && targetSquare[1] === "1"));
+    if (isPromotion) {
+      // Delay the move and show the promotion dialog
+      setPromotionPending({ from: sourceSquare, to: targetSquare });
+      return;
+    }
     try {
       const gameCopy = new Chess(game.fen());
   
       gameCopy.move({
         from: sourceSquare,
         to: targetSquare,
-        promotion: "q", 
+        promotion, 
       });
 
       if(gameCopy.isGameOver()) (document.getElementById('game_over_modal') as HTMLDialogElement)?.showModal();
@@ -35,6 +46,7 @@ export default function TwoPlayer() {
   };
 
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean{
+    if(!sourceSquare || !targetSquare) return false;
     setSuggestion({});
     try {
       const gameCopy = new Chess(game.fen());
@@ -119,15 +131,6 @@ export default function TwoPlayer() {
   return (
     <div className="flex flex-col h-screen items-center justify-center">
       <div className="w-full sm:w-2/3 md:w-1/2 lg:w-2/5 xl:3/10 2xl:1/5 flex flex-col items-center">
-        <div className="w-full overflow-x-scroll p-2 h-auto">
-          <div className="w-max">
-          {playedMoves.map( (moveObj, ind) => (
-            <span key={ind} className="p-4">
-              {ind%2 === 0 ? `${(ind/2)+1}. ` : '' }
-              {moveObj.move}
-            </span>
-          ))}</div>
-        </div>
         <Chessboard
           id="BasicBoard"
           position={game.fen()}
@@ -135,6 +138,22 @@ export default function TwoPlayer() {
           onPieceClick={onPieceClick}
           onSquareClick={onSquareClick}
           customSquareStyles={suggestion}
+          showPromotionDialog={!!promotionPending}
+          promotionToSquare={promotionPending?.to}
+          onPromotionPieceSelect={(piece) => {
+            const { from, to } = promotionPending;
+            
+            game.move({
+              from,
+              to,
+              promotion:piece?.[1].toLowerCase() ?? 'q'
+            });
+            setPromotionPending(null);
+            return true;
+          }}
+        />
+        <Moves
+          playedMoves={playedMoves}
         />
       </div>
       <dialog id="game_over_modal" className="modal">
