@@ -18,3 +18,12 @@ export function removeLocalStorage( key: string ){
     localStorage.removeItem( key );
   }
 }
+
+export function generateCode( len: number) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < len; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return code;
+}

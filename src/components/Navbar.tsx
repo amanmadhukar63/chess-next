@@ -3,7 +3,7 @@ import Link from "next/link";
 import ThemeSwitch from "./ThemeSwitch";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter, usePathname } from "next/navigation";
-import { getLocalStorage, removeLocalStorage } from "@/helper/helper";
+import { generateCode, getLocalStorage, removeLocalStorage } from "@/helper/helper";
 import { useEffect, useState } from "react";
 import { UserType } from "@/helper/types";
 
@@ -43,7 +43,11 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              onClick={() => {
+                if(document && document.activeElement instanceof HTMLElement) document.activeElement.blur()
+              }}
+            >
               <li><a>Item 1</a></li>
               <li>
                 <a>Parent</a>
@@ -61,14 +65,19 @@ export default function Navbar() {
           <ul className="menu menu-horizontal px-1">
             <li><a>Hire Me</a></li>
             <li>
-              <details className="dropdown">
-                <summary>Mode</summary>
-                <ul className="menu dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm">
+              <div className="dropdown dropdown-hover">
+                <div tabIndex={0} role="button">Mode</div>
+                <ul 
+                  tabIndex={0}
+                  onClick={() => {
+                    if(document && document.activeElement instanceof HTMLElement) document.activeElement.blur()
+                  }}
+                  className="menu dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm">
                   <li><Link href={'/2player'}>2 Player</Link></li>
-                  <li><a>vs Friend</a></li>
+                  <li><div onClick={()=>(document.getElementById('game_options') as HTMLDialogElement).showModal()}>vs Friend</div></li>
                   <li><a>Dice Chess</a></li>
                 </ul>
-              </details>
+              </div>
             </li>
             <li><a>Developer</a></li>
           </ul>
@@ -100,6 +109,39 @@ export default function Navbar() {
             </div>
           )}
         </div>
+      <dialog id="game_options" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Let's Play</h3>
+          <form className="flex m-4 justify-around" method="dialog">
+            <button className="btn h-20 w-36" onClick={()=>(document.getElementById('join_game') as HTMLDialogElement).showModal()}>Join Game</button>
+            <button className="btn h-20 w-36" onClick={() => {
+              router.push(`/match/${generateCode(6)}?method=create`)
+            }}>Create Game</button>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+      <dialog id="join_game" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Let's Play</h3>
+          <form className="flex m-4 justify-around" method="dialog">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Enter Game Id</legend>
+              <input id="gameIdInput" type="text" className="input" placeholder="Type here" />
+            </fieldset>
+            <button className="btn h-20 w-36" onClick={() => {
+              const input = document.getElementById("gameIdInput") as HTMLInputElement;
+              const id = input?.value.trim();
+              router.push(`/match/${id}?method=join`)
+            }}>Join Game</button>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
       </div>
       <Toaster />
     </>
