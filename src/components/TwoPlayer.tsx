@@ -3,7 +3,7 @@ import { Chessboard } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { PlayedMovesType } from "@/helper/types";
+import { PlayedMovesType, PromotionType } from "@/helper/types";
 import Moves from "./Moves";
 
 export default function TwoPlayer() {
@@ -12,7 +12,7 @@ export default function TwoPlayer() {
   const [playedMoves, setPlayedMoves] = useState<PlayedMovesType>([]);
   const [suggestion, setSuggestion] = useState<Record<string, { background: string, move: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
-  const [promotionPending, setPromotionPending] = useState<any>(null);
+  const [promotionPending, setPromotionPending] = useState<PromotionType|null>(null);
 
   function makeAMove(sourceSquare: Square, targetSquare: Square, promotion="q"){
     setSuggestion({});

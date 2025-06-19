@@ -16,6 +16,11 @@ export interface MovesType {
   playedMoves: PlayedMovesType;
 }
 
+export type PromotionType = {
+  from: string,
+  to: string
+}
+
 export type PlayedMovesType = Array<{move:string,from:Square,to:Square}>;
 
 export type NullableUserType = UserType | null;

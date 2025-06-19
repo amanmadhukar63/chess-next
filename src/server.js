@@ -1,7 +1,7 @@
 // server.js
-const { createServer } = require("http");
-const next = require("next");
-const { Server } = require("socket.io");
+import { createServer } from 'http';
+import next from 'next';
+import { Server } from 'socket.io';
 
 const app = next({ dev: true });
 const handle = app.getRequestHandler();

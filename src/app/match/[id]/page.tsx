@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Chessboard } from 'react-chessboard';
 import { Chess, Square } from 'chess.js';
 import toast from 'react-hot-toast';
-import { PlayedMovesType } from '@/helper/types';
+import { PlayedMovesType, PromotionType } from '@/helper/types';
 import { BoardOrientation } from 'react-chessboard/dist/chessboard/types';
 
 export default function Page({params}:{
@@ -24,9 +24,12 @@ export default function Page({params}:{
   const [playedMoves, setPlayedMoves] = useState<PlayedMovesType>([]);
   const [suggestion, setSuggestion] = useState<Record<string, { background: string, move: string }>>({});
   const from = useRef<{source:Square,selected:boolean}>({source:'a1',selected:false});
-  const [promotionPending, setPromotionPending] = useState<any>(null);
+  const [promotionPending, setPromotionPending] = useState<PromotionType| null>(null);
 
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean{
+    if(playedMoves && promotionPending){
+      console.log('do nothing')
+    }
     const piece = game.get(sourceSquare);
     if(color.current[0]!==game.turn() || piece?.color!==game.turn()) return false;
     if(!sourceSquare || !targetSquare) return false;

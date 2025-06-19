@@ -111,7 +111,7 @@ export default function Navbar() {
         </div>
       <dialog id="game_options" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Let's Play</h3>
+          <h3 className="font-bold text-lg">Let&apos;s Play</h3>
           <form className="flex m-4 justify-around" method="dialog">
             <button className="btn h-20 w-36" onClick={()=>(document.getElementById('join_game') as HTMLDialogElement).showModal()}>Join Game</button>
             <button className="btn h-20 w-36" onClick={() => {
@@ -125,7 +125,7 @@ export default function Navbar() {
       </dialog>
       <dialog id="join_game" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Let's Play</h3>
+          <h3 className="font-bold text-lg">Let&apos;s Play</h3>
           <form className="flex m-4 justify-around" method="dialog">
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Enter Game Id</legend>
