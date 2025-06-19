@@ -141,7 +141,7 @@ export default function TwoPlayer() {
           showPromotionDialog={!!promotionPending}
           promotionToSquare={promotionPending?.to}
           onPromotionPieceSelect={(piece) => {
-            const { from, to } = promotionPending;
+            const { from, to } = promotionPending ?? {from:'a1',to:'a1'};
             
             game.move({
               from,

@@ -17,8 +17,8 @@ export interface MovesType {
 }
 
 export type PromotionType = {
-  from: string,
-  to: string
+  from: Square,
+  to: Square
 }
 
 export type PlayedMovesType = Array<{move:string,from:Square,to:Square}>;
