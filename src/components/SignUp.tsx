@@ -22,7 +22,7 @@ export default function SignUp(){
     if(loading) return;
     try {
       setLoading(true);
-      const res = await fetch('/api/user/signup', {
+      const res = await fetch('https://chess-6b1s.onrender.com/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,6 +54,7 @@ export default function SignUp(){
     } catch (error) {
 
       console.error('Error:', error);
+      setLoading(false);
       toast.error('Something went wrong');
       
     }

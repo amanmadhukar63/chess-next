@@ -20,7 +20,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const res = await fetch('/api/user/login', {
+      const res = await fetch('https://chess-6b1s.onrender.com/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,6 @@ export default function Login() {
         case ResponseStatus.SUCCESS:
           toast.success(result.message);
           setLocalStorage('user', JSON.stringify(result?.data));
-          window.location.href = '/';
           break;
 
         case ResponseStatus.ERROR:
@@ -51,6 +50,7 @@ export default function Login() {
       }
     } catch (error) {
       console.error('Error:', error);
+      setLoading(false);
       toast.error('Oops! Something went wrong');
     }
   };
