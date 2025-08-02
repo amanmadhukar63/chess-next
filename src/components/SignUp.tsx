@@ -1,9 +1,9 @@
 'use client'
-import { setLocalStorage } from "@/helper/helper";
+import { isUserAuthenticated, setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface SignUpFormType {
@@ -17,6 +17,13 @@ export default function SignUp(){
   const userData = useRef<SignUpFormType>({username:"",email:"",password:""});
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // handle route protection
+    if(isUserAuthenticated()) {
+      router.push('/');
+    }
+  },[router]);
 
   const handleSignUp = async ({username,email,password}:SignUpFormType) => {
     if(loading) return;
@@ -35,7 +42,7 @@ export default function SignUp(){
       const result = await res.json();
       switch (result.status) {
         case ResponseStatus.SUCCESS:
-          toast.success(result.message);
+          toast.success(result.msg);
           setLocalStorage('user', JSON.stringify(result?.data));
           router.push('/');
           break;

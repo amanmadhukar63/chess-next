@@ -27,3 +27,8 @@ export function generateCode( len: number) {
   }
   return code;
 }
+
+export function isUserAuthenticated(): boolean {
+  const user = getLocalStorage('user');
+  return user !== null && user !== undefined;
+}

@@ -1,8 +1,9 @@
 'use client'
-import { setLocalStorage } from "@/helper/helper";
+import { isUserAuthenticated, setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 interface LoginFormType {
@@ -14,6 +15,14 @@ export default function Login() {
 
   const userData = useRef<LoginFormType>({email:"",password:""});
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    // handle route protection
+    if(isUserAuthenticated()) {
+      router.push('/');
+    }
+  },[router]);
 
   const handleLogin = async ({email, password}: LoginFormType) => {
     if(loading) return;
@@ -33,8 +42,9 @@ export default function Login() {
       const result = await res.json();
       switch (result.status) {
         case ResponseStatus.SUCCESS:
-          toast.success(result.message);
+          toast.success(result.msg);
           setLocalStorage('user', JSON.stringify(result?.data));
+          router.push('/');
           break;
 
         case ResponseStatus.ERROR:
