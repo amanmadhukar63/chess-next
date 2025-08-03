@@ -7,6 +7,7 @@ import { Chess, Square } from 'chess.js';
 import toast from 'react-hot-toast';
 import { PlayedMovesType, PromotionType } from '@/helper/types';
 import { BoardOrientation } from 'react-chessboard/dist/chessboard/types';
+import { backendBaseUrl } from '@/constants.js';
 
 export default function Page({params}:{
   params: Promise<{ id: string }>
@@ -158,7 +159,7 @@ export default function Page({params}:{
   useEffect(() => {
     if(id){
       socketRef.current = io(
-        typeof window !== "undefined" ? window.location.origin : "",
+        backendBaseUrl,
         {
           path: "/api/socketio",
         }

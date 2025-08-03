@@ -1,4 +1,5 @@
 'use client'
+import { backendBaseUrl } from "@/constants.js";
 import { isUserAuthenticated, setLocalStorage } from "@/helper/helper";
 import { ResponseStatus } from "@/helper/response";
 import Link from "next/link";
@@ -29,7 +30,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const res = await fetch('https://chess-6b1s.onrender.com/api/login/', {
+      const res = await fetch(`${backendBaseUrl}/api/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -20,7 +20,6 @@ export default function Navbar() {
 
   async function handleLogout(){
     try {
-      await fetch('https://chess-6b1s.onrender.com/api/logout');
       removeLocalStorage('user');
       router.push('/login');
       toast.success("User Logged Out");

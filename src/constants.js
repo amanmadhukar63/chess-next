@@ -1,0 +1,1 @@
+export const backendBaseUrl = 'https://chess-6b1s.onrender.com';
